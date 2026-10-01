@@ -1,0 +1,41 @@
+name: Build NDK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Baixar Android NDK
+        run: |
+          wget -q https://dl.google.com/android/repository/android-ndk-r25b-linux.zip
+          unzip -q android-ndk-r25b-linux.zip
+
+      - name: Compilar menu7bypass
+        run: |
+          mkdir -p jni
+          cp Android.mk jni/ 2>/dev/null || true
+          cp Application.mk jni/ 2>/dev/null || true
+          cp native-lib.cpp jni/ 2>/dev/null || true
+          cp offsets.h jni/ 2>/dev/null || true
+          cp memory.h jni/ 2>/dev/null || true
+          cp memory.cpp jni/ 2>/dev/null || true
+          cp hooks.h jni/ 2>/dev/null || true
+          cp hooks.cpp jni/ 2>/dev/null || true
+
+          ./android-ndk-r25b/ndk-build \
+            NDK_PROJECT_PATH=. \
+            APP_BUILD_SCRIPT=./jni/Android.mk \
+            NDK_APPLICATION_MK=./jni/Application.mk
+
+      - name: Salvar .so gerada
+        uses: actions/upload-artifact@v3
+        with:
+          name: libmenu7bypass
+          path: libs/**/*.so
