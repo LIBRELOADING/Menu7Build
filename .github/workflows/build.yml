@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Baixar Android NDK
         run: |
           wget -q https://dl.google.com/android/repository/android-ndk-r25b-linux.zip
           unzip -q android-ndk-r25b-linux.zip
 
-      - name: Compilar menu7bypass
+      - name: Preparar pasta jni
         run: |
           mkdir -p jni
           cp Android.mk jni/ 2>/dev/null || true
@@ -29,13 +29,15 @@ jobs:
           cp hooks.h jni/ 2>/dev/null || true
           cp hooks.cpp jni/ 2>/dev/null || true
 
+      - name: Compilar menu7bypass
+        run: |
           ./android-ndk-r25b/ndk-build \
             NDK_PROJECT_PATH=. \
             APP_BUILD_SCRIPT=./jni/Android.mk \
             NDK_APPLICATION_MK=./jni/Application.mk
 
       - name: Salvar .so gerada
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libmenu7bypass
           path: libs/**/*.so
