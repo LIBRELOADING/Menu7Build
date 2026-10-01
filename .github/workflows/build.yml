@@ -28,6 +28,7 @@ jobs:
           cp memory.cpp jni/ 2>/dev/null || true
           cp hooks.h jni/ 2>/dev/null || true
           cp hooks.cpp jni/ 2>/dev/null || true
+          ls -la jni/
 
       - name: Compilar menu7bypass
         run: |
