@@ -9,8 +9,8 @@
 static uintptr_t g_anogs_base = 0;
 static uintptr_t g_anort_base = 0;
 
-// ARM64: MOV W0, #0 ; RET
-static const uint8_t RET0[] = {0x00, 0x00, 0x80, 0x52, 0xC0, 0x03, 0x5F, 0xD6};
+// ARMv7: MOV R0, #0 ; BX LR  =>  00 00 A0 E3 1E FF 2F E1
+static const uint8_t RET0[] = {0x00, 0x00, 0xA0, 0xE3, 0x1E, 0xFF, 0x2F, 0xE1};
 
 void Hooks::Init() {
     g_anogs_base = Memory::GetModuleBase("libanogs.so");
