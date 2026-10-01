@@ -5,8 +5,6 @@
 #define LOG_TAG "Menu7Bypass"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
-// Java_com_Menu7Bypass_Native_initNative
-//      (package)         (classe) (método)
 extern "C" JNIEXPORT void JNICALL
 Java_com_Menu7Bypass_Native_initNative(JNIEnv* env, jclass clazz) {
     LOGI("initNative() chamado");
