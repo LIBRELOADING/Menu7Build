@@ -63,7 +63,8 @@ bool Memory::ReadBytes(uintptr_t addr, uint8_t* out, size_t len) {
 }
 
 bool Memory::Nop(uintptr_t addr, size_t count) {
-    uint8_t nop[4] = {0x1F, 0x20, 0x03, 0xD5};  // ARM64 NOP
+    // ARMv7 NOP: MOV R0, R0 => 0x00 0xF0 0x20 0xE3
+    uint8_t nop[4] = {0x00, 0xF0, 0x20, 0xE3};
     for (size_t i = 0; i < count; i++) {
         if (!PatchBytes(addr + (i * 4), nop, 4)) return false;
     }
